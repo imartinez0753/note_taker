@@ -2,6 +2,7 @@ var express = require("express");
 var path = require("path");
 var fs = require("fs");
 var app = express();
+
 var PORT = process.env.PORT || 3000;
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -31,24 +32,20 @@ app.get("/api/notes", function (req, res) {
 //-------------------------------------------
 app.post("/api/notes", function (req, res) {
   var newEntry = req.body;
-  fs.appendFile("db.json", newEntry + "\n", function (err) {
+  // const usersInput = require("./db.json");
+
+  // usersInput.push(newEntry);
+
+  fs.appendFile("db.json", JSON.stringify(newEntry), function (err) {
     if (err) {
       console.log(err);
     } else {
       console.log("Commit logged!");
-      res.json(newEntry);
+      return res.json(newEntry);
     }
   });
 });
 
-//   var newTable = req.body;
-
-//   console.log(newTable);
-
-//   waitList.push(newTable);
-
-//   res.json(newTable);
-// });
 //delete
 //-----------------------------------------------------
 app.post("/api/delete", function (req, res) {
