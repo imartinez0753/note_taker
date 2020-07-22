@@ -1,1 +1,5 @@
-[{"title":"Test Title","text":"Test text"}]
+[
+  { "title": "Test Title", "text": "Test text", "name": "test" },
+  { "title": "Ian is the best", "text": "he really is", "name": "Ian" }
+]
+[object Object]
