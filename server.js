@@ -30,7 +30,7 @@ app.get("/api/notes", function (req, resultToUser) {
 //-------------------------------------------
 app.post("/api/notes", function (fromUser, res) {
   const userInput = fromUser.body;
-  for (i = 0; i < db.length; ++i) {
+  for (i = 0; i <= db.length; ++i) {
     userInput["id"] = i + 1;
   }
   db.push(userInput);
@@ -46,6 +46,10 @@ app.post("/api/notes", function (fromUser, res) {
 //delete------------------------------------------
 //TODO;
 app.post("/api/notes/:id", function (req, res) {
+  var chosen = req.params.id;
+
+  console.log(chosen);
+
   fs.readFile("/db/db.json", function (err, dataFromDB) {
     if (err) throw err;
     const resultsFromDB = JSON.parse(dataFromDB);
@@ -68,4 +72,5 @@ app.post("/api/notes/:id", function (req, res) {
 app.listen(PORT, function () {
   console.log("App listening on PORT " + PORT);
 });
-console.log(db.length);
+// const id = db[1].id;
+// console.log(id);
