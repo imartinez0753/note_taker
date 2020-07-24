@@ -7,6 +7,7 @@ const db = require("./db/db.json");
 var PORT = process.env.PORT || 3000;
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(express.static("public"));
 //gets
 //----------------------------------------------------------
 app.get("/", function (req, res) {
@@ -29,6 +30,9 @@ app.get("/api/notes", function (req, resultToUser) {
 //-------------------------------------------
 app.post("/api/notes", function (fromUser, res) {
   const userInput = fromUser.body;
+  for (i = 0; i < db.length; ++i) {
+    userInput["id"] = i + 1;
+  }
   db.push(userInput);
   fs.writeFile("db/db.json", JSON.stringify(db), (err) => {
     // Checking for errors
