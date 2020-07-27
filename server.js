@@ -3,12 +3,20 @@ var path = require("path");
 var fs = require("fs");
 var app = express();
 const db = require("./db/db.json");
-var idFinder = db.length - 1;
-var idCount = db[idFinder].id;
+var idCount = null;
+var idFinder = null;
 var PORT = process.env.PORT || 3000;
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static("public"));
+
+if (db.length === 0) {
+  idCount = 0;
+} else {
+  idFinder = db.length - 1;
+  idCount = db[idFinder].id;
+}
+
 //gets
 //----------------------------------------------------------
 app.get("/", function (req, res) {
@@ -33,9 +41,6 @@ app.post("/api/notes", function (fromUser, res) {
   idCount++;
   const userInput = fromUser.body;
   userInput["id"] = idCount;
-  // for (i = 0; i <= db.length; ++i) {
-
-  // }
   db.push(userInput);
   fs.writeFile("db/db.json", JSON.stringify(db), (err) => {
     // Checking for errors
@@ -47,7 +52,7 @@ app.post("/api/notes", function (fromUser, res) {
 });
 
 //delete------------------------------------------
-//TODO;
+
 app.post("/api/notes/:id", function (req, res) {
   var chosen = parseInt(req.params.id);
   console.log(chosen);
