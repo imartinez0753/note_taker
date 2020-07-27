@@ -3,8 +3,8 @@ var path = require("path");
 var fs = require("fs");
 var app = express();
 const db = require("./db/db.json");
-var idCount = 0;
-
+var idFinder = db.length - 1;
+var idCount = db[idFinder].id;
 var PORT = process.env.PORT || 3000;
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
