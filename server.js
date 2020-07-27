@@ -3,6 +3,7 @@ var path = require("path");
 var fs = require("fs");
 var app = express();
 const db = require("./db/db.json");
+var idCount = 0;
 
 var PORT = process.env.PORT || 3000;
 app.use(express.urlencoded({ extended: true }));
@@ -29,16 +30,18 @@ app.get("/api/notes", function (req, resultToUser) {
 //post
 //-------------------------------------------
 app.post("/api/notes", function (fromUser, res) {
+  idCount++;
   const userInput = fromUser.body;
-  for (i = 0; i <= db.length; ++i) {
-    userInput["id"] = i + 1;
-  }
+  userInput["id"] = idCount;
+  // for (i = 0; i <= db.length; ++i) {
+
+  // }
   db.push(userInput);
   fs.writeFile("db/db.json", JSON.stringify(db), (err) => {
     // Checking for errors
     if (err) throw err;
 
-    console.log("Done writing");
+    // console.log("Done writing");
     return res.json(userInput); // Success
   });
 });
@@ -46,27 +49,24 @@ app.post("/api/notes", function (fromUser, res) {
 //delete------------------------------------------
 //TODO;
 app.post("/api/notes/:id", function (req, res) {
-  var chosen = req.params.id;
-
+  var chosen = parseInt(req.params.id);
   console.log(chosen);
+  for (i = 0; i < db.length; i++) {
+    if (chosen === db[i].id) {
+      console.log(db[i]);
+      result = db.splice([i], 1);
+      // console.log(result);
+      console.log(db);
+      // return res.json(false);
+      fs.writeFile("db/db.json", JSON.stringify(db), (err) => {
+        // Checking for errors
+        if (err) throw err;
 
-  fs.readFile("/db/db.json", function (err, dataFromDB) {
-    if (err) throw err;
-    const resultsFromDB = JSON.parse(dataFromDB);
-    console.log(resultsFromDB);
-  });
-
-  // var chosen = req.params.id;
-
-  // console.log(chosen);
-
-  // for (var i = 0; i < characters.length; i++) {
-  //   if (chosen === characters[i].routeName) {
-  //     return res.json(characters[i]);
-  //   }
-  // }
-
-  // return res.json(false);
+        // console.log("Done writing");
+        return res.json(db); // Success
+      });
+    }
+  }
 });
 //----------------------------------------------------------
 app.listen(PORT, function () {
