@@ -53,7 +53,7 @@ app.post("/api/notes", function (fromUser, res) {
 
 //delete------------------------------------------
 
-app.post("/api/notes/:id", function (req, res) {
+app.delete("/api/notes/:id", function (req, res) {
   var chosen = parseInt(req.params.id);
   console.log(chosen);
   for (i = 0; i < db.length; i++) {
